@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import Form from './components/Form/Form';
 import ContactList from './components/Contacts/Contacts';
 import Filter from './components/Filter/Filter';
+
+
 import css from './App.module.css';
 
 function App() {
@@ -13,6 +15,7 @@ function App() {
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ]);
   const [filter, setFilter] = useState('');
+
 
   useEffect(() => {
     const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
