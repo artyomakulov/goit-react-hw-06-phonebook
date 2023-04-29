@@ -1,11 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import css from './Contacts.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from '../../redux/contacts/slice';
 
-export default function ContactList({ contacts, onDeleteContact }) {
+export default function ContactList() {
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
+
+  const handleDeleteContact = contactId => {
+    dispatch(deleteContact(contactId));
+  };
+
+  const getVisibleContacts = () => {
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  const visibleContacts = getVisibleContacts();
   return (
     <ol className={css.ContactList}>
-      {contacts.map(({ id, name, number }) => {
+      {visibleContacts.map(({ id, name, number }) => {
         return (
           <li className={css.ContactList_item} key={id}>
             <p>
@@ -13,7 +30,7 @@ export default function ContactList({ contacts, onDeleteContact }) {
             </p>
             <button
               className={css.ContactList_btn}
-              onClick={() => onDeleteContact(id)}
+              onClick={() => handleDeleteContact(id)}
               type="button"
             >
               Delete
@@ -24,14 +41,3 @@ export default function ContactList({ contacts, onDeleteContact }) {
     </ol>
   );
 }
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  onDeleteContact: PropTypes.func.isRequired,
-};
