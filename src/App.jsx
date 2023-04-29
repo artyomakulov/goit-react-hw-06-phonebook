@@ -5,7 +5,6 @@ import Filter from './components/Filter/Filter';
 import css from './App.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from './redux/contacts/slice';
-import { setFilter } from './redux/filter/slice';
 
 function App() {
   const contacts = useSelector(state => state.contacts);
@@ -14,10 +13,6 @@ function App() {
 
   const handleDeleteContact = contactId => {
     dispatch(deleteContact(contactId));
-  };
-
-  const changeFilter = e => {
-    dispatch(setFilter(e.currentTarget.value));
   };
 
   const getVisibleContacts = () => {
@@ -32,7 +27,7 @@ function App() {
       <h1>Phonebook</h1>
       <Form />
       <h2>Contacts</h2>
-      <Filter value={filter} onChange={changeFilter} />
+      <Filter />
       <ContactList
         contacts={getVisibleContacts()}
         onDeleteContact={handleDeleteContact}
